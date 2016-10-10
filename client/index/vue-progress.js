@@ -1,8 +1,12 @@
 'use strict'
+
 import vueProgressBar from './vue-progressbar.vue'
 
 module.exports.install = function (Vue, options = {}) {
+    const isVueNext = Vue.version.split('.')[0] === '2'
+    
     Vue.component('vue-progress-bar', vueProgressBar)
+    
     let Progress = {
         $root: null,
         state: {
@@ -34,6 +38,7 @@ module.exports.install = function (Vue, options = {}) {
         },
         start (time) {
             if (!time) time = 3000
+            if (!this.$root) return
             this.$root.RADON_LOADING_BAR.percent = 0
             this.$root.RADON_LOADING_BAR.options.show = true
             this.$root.RADON_LOADING_BAR.options.canSuccess = true
@@ -72,6 +77,7 @@ module.exports.install = function (Vue, options = {}) {
             }, 800)
         },
         finish () {
+            if (!this.$root) return
             this.$root.RADON_LOADING_BAR.percent = 100
             this.hide()
         },
@@ -82,15 +88,27 @@ module.exports.install = function (Vue, options = {}) {
         }
     }
 
-    Vue.mixin({
-        beforeCreate () {
-            if (!Progress.$root) {
-                if (this === this.$root) {
-                    Progress.init(this)
+    if (isVueNext) {
+        Vue.mixin({
+            beforeCreate () {
+                if (!Progress.$root) {
+                    if (this === this.$root) {
+                        Progress.init(this)
+                    }
                 }
             }
-        }
-    })
+        })
+    } else {
+        Vue.mixin({
+            init () {
+                if (!Progress.$root) {
+                    if (this === this.$root) {
+                        Progress.init(this)
+                    }
+                }
+            }
+        })
+    }
 
     Vue.prototype.$Progress = Progress
 }

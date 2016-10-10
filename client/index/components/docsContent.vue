@@ -121,7 +121,7 @@
 
 <script>
 export default {
-    ready () {
+    beforeCreated () {
         this.$Progress.start()
     },
     methods: {

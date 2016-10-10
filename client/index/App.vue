@@ -7,6 +7,9 @@
 <script>
 import docsContent from './components/docsContent.vue'
 export default {
+    created (){
+        this.$Progress.start()
+    },
     components: {
         docsContent
     }

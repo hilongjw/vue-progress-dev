@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-// import VueProgress from './vue-progress'
-import VueProgress from './vue-progress.es5'
+import VueProgress from './vue-progress'
+// import VueProgress from './vue-progress.es5'
 
 Vue.use(VueProgress)
 
